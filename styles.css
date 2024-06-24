@@ -1,3 +1,4 @@
+/* Apply box-sizing border-box model and reset margin, padding, and font-family */
 *,
 *::before,
 *::after {
@@ -7,30 +8,32 @@
   font-family: "Poppins", "sans-serif";
 }
 
+/* Main wrapper styling */
 .wrapper {
   width: 100vw;
   height: 100vh;
-  background: #bb2e2e;
-  background-image: url(./assets/bg.jpg);
+  background: #bb2e2e; /* Fallback background color */
+  background-image: url(./assets/bg.jpg); /* Background image */
   background-size: cover;
   background-position: center;
   display: grid;
-  place-items: center;
+  place-items: center; /* Center content both horizontally and vertically */
 }
 
+/* Game info styling */
 .game-info {
   color: white;
   position: absolute;
   top: 3rem;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); /* Center horizontally */
   background-color: rgba(255, 255, 255, 0.15);
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 0.5rem 3rem;
-  /* text-align:center; */
 }
 
+/* Tic Tac Toe grid styling */
 .tic-tac-toe {
   width: 90%;
   max-width: 20rem;
@@ -39,14 +42,15 @@
   border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 2rem;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  aspect-ratio: 1/1;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns with equal width */
+  aspect-ratio: 1/1; /* Maintain aspect ratio */
 }
 
+/* Styling for each box in the grid */
 .box {
   position: relative;
   width: 100%;
-  aspect-ratio: 1/1;
+  aspect-ratio: 1/1; /* Maintain aspect ratio */
   cursor: pointer;
   font-size: 3rem;
   color: white;
@@ -55,6 +59,7 @@
   align-items: center;
 }
 
+/* Borders for different boxes in the grid */
 .box1,
 .box2,
 .box4,
@@ -73,24 +78,32 @@
   border-right: 2px solid white;
 }
 
+/* New Game button styling */
 .btn {
   color: white;
   position: absolute;
   bottom: 3rem;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); /* Center horizontally */
   background-color: rgba(255, 255, 255, 0.15);
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 0.5rem 2rem;
   cursor: pointer;
-  display: none;
+  display: none; /* Initially hidden */
 }
 
+/* Display button when active */
 .btn.active {
-  display: flex;
+  display: flex; /* Flex display to show button */
 }
 
+/* Styling for win state */
 .win {
-  background-color: rgba(0, 255, 0, 0.3);
+  background-color: rgba(
+    0,
+    255,
+    0,
+    0.3
+  ); /* Semi-transparent green background for win state */
 }

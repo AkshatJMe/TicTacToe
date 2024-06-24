@@ -1,10 +1,13 @@
+// Selecting DOM elements
 const boxes = document.querySelectorAll(".box");
 const gameInfo = document.querySelector(".game-info");
 const newGameBtn = document.querySelector(".btn");
 
+// Initializing game variables
 let currentPlayer;
 let gameGrid;
 
+// Array of winning positions in Tic Tac Toe
 const winningPositions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -16,99 +19,98 @@ const winningPositions = [
   [2, 4, 6],
 ];
 
-//let's create a function to initialise the game
+// Function to initialize the game
 function initGame() {
   currentPlayer = "X";
   gameGrid = ["", "", "", "", "", "", "", "", ""];
-  //UI pr empty bhi karna padega boxes ko
+
+  // Reset UI for each box
   boxes.forEach((box, index) => {
-    box.innerText = "";
-    boxes[index].style.pointerEvents = "all";
-    //one more thing is missing, initialise box with css properties again
-    box.classList = `box box${index + 1}`;
+    box.innerText = ""; // Clear text content
+    boxes[index].style.pointerEvents = "all"; // Enable pointer events
+    box.classList = `box box${index + 1}`; // Reset box class
   });
+
+  // Hide new game button
   newGameBtn.classList.remove("active");
+
+  // Display current player
   gameInfo.innerText = `Current Player - ${currentPlayer}`;
 }
 
+// Initial game setup
 initGame();
 
+// Function to swap turns between X and O
 function swapTurn() {
-  if (currentPlayer === "X") {
-    currentPlayer = "O";
-  } else {
-    currentPlayer = "X";
-  }
-  //UI Update
+  currentPlayer = currentPlayer === "X" ? "O" : "X";
+  // Update UI with current player
   gameInfo.innerText = `Current Player - ${currentPlayer}`;
 }
 
+// Function to check if the game is over
 function checkGameOver() {
   let answer = "";
 
+  // Check all winning combinations
   winningPositions.forEach((position) => {
-    //all 3 boxes should be non-empty and exactly same in value
+    // Check if all three positions in a winning combination are the same and not empty
     if (
-      (gameGrid[position[0]] !== "" ||
-        gameGrid[position[1]] !== "" ||
-        gameGrid[position[2]] !== "") &&
+      gameGrid[position[0]] !== "" &&
       gameGrid[position[0]] === gameGrid[position[1]] &&
       gameGrid[position[1]] === gameGrid[position[2]]
     ) {
-      //check if winner is X
-      if (gameGrid[position[0]] === "X") answer = "X";
-      else {
-        answer = "O";
-      }
+      // Determine the winner
+      answer = gameGrid[position[0]];
 
-      //disable pointer events
+      // Disable pointer events on boxes
       boxes.forEach((box) => {
         box.style.pointerEvents = "none";
       });
 
-      //now we know X/O is a winner
+      // Highlight winning boxes
       boxes[position[0]].classList.add("win");
       boxes[position[1]].classList.add("win");
       boxes[position[2]].classList.add("win");
     }
   });
 
-  //it means we have a winner
+  // If there is a winner
   if (answer !== "") {
     gameInfo.innerText = `Winner Player - ${answer}`;
-    newGameBtn.classList.add("active");
+    newGameBtn.classList.add("active"); // Show new game button
     return;
   }
 
-  //We know, NO Winner Found, let's check whether there is tie
+  // If no winner and all boxes are filled (tie game)
   let fillCount = 0;
   gameGrid.forEach((box) => {
     if (box !== "") fillCount++;
   });
 
-  //board is Filled, game is TIE
   if (fillCount === 9) {
     gameInfo.innerText = "Game Tied !";
-    newGameBtn.classList.add("active");
+    newGameBtn.classList.add("active"); // Show new game button
   }
 }
 
+// Function to handle box click
 function handleClick(index) {
   if (gameGrid[index] === "") {
-    boxes[index].innerText = currentPlayer;
-    gameGrid[index] = currentPlayer;
-    boxes[index].style.pointerEvents = "none";
-    //swap karo turn ko
-    swapTurn();
-    //check koi jeet toh nahi gya
-    checkGameOver();
+    boxes[index].innerText = currentPlayer; // Update box with current player (X or O)
+    gameGrid[index] = currentPlayer; // Update game grid
+    boxes[index].style.pointerEvents = "none"; // Disable further clicks on this box
+    swapTurn(); // Swap turn to the next player
+    checkGameOver(); // Check if game is over
   }
 }
 
+// Event listeners for each box
 boxes.forEach((box, index) => {
   box.addEventListener("click", () => {
     handleClick(index);
   });
 });
 
+// Event listener for new game button
 newGameBtn.addEventListener("click", initGame);
