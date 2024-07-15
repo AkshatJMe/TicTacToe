@@ -7,9 +7,8 @@ This project is a simple implementation of the classic Tic Tac Toe game using HT
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [How to Use](#how-to-use)
-- [Example](#example)
-- [Credits](#credits)
-- [License](#license)
+- [Initial Setup](#initial-setup)
+- [Win Detection](#win-detection)
 
 ## Features
 
