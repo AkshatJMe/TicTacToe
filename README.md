@@ -40,3 +40,5 @@ This project is a simple implementation of the classic Tic Tac Toe game using HT
 ## Win Detection
 
 <img width='100%' src='https://github.com/HiAkshatJain/Tic-Tac-Toe/blob/main/screenshots/win.png' />
+
+## TypeScript Code is Newly added for refrences.
