@@ -26,7 +26,7 @@ This project is a simple implementation of the classic Tic Tac Toe game using HT
 
 ## How to Use
 
-1. Clone the repository: `git clone https://github.com/HiAkshatJain/Tic-Tac-Toe.git`
+1. Clone the repository: `git clone https://github.com/AkshatJMe/Tic-Tac-Toe.git`
 2. Open `index.html` in your web browser.
 
 3. Click on the squares to make your move. Alternate turns with your opponent.
@@ -35,10 +35,10 @@ This project is a simple implementation of the classic Tic Tac Toe game using HT
 
 ## Initial Setup
 
-<img width='100%' src='https://github.com/HiAkshatJain/Tic-Tac-Toe/blob/main/screenshots/initial.png' />
+<img width='100%' src='https://github.com/AkshatJMe/Tic-Tac-Toe/blob/main/screenshots/initial.png' />
 
 ## Win Detection
 
-<img width='100%' src='https://github.com/HiAkshatJain/Tic-Tac-Toe/blob/main/screenshots/win.png' />
+<img width='100%' src='https://github.com/AkshatJMe/Tic-Tac-Toe/blob/main/screenshots/win.png' />
 
 ## TypeScript Code is Newly added for refrences.
