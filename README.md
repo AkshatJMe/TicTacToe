@@ -1,18 +1,18 @@
-# Tic Tac Toe Game
+# Tic Tac Toe — Minimax AI (TypeScript Version)
 
-This project is a simple implementation of the classic Tic Tac Toe game using HTML, CSS, and JavaScript. It allows two players to play Tic Tac Toe against each other in a web browser.
+This project is a clean, responsive Tic Tac Toe game built with **TypeScript** and powered by the **Minimax algorithm**.  
+The UI matches the original style while adding new features, including:
 
-## Table of Contents
-
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [How to Use](#how-to-use)
-- [Initial Setup](#initial-setup)
-- [Win Detection](#win-detection)
+- Human vs AI gameplay
+- Choice of **Human First** or **AI First**
+- Unbeatable AI using the Minimax algorithm
+- Animated win-line drawing
+- Fully responsive board
+- Clean TypeScript structure
 
 ## Features
 
-- **Two-player Gameplay**: Play against a friend on the same computer.
+- **Single-player Gameplay**: Play against a AI on the same computer who never looses.
 
 - **Win Detection**: Automatically detects and announces when a player wins or when the game ends in a draw.
 
@@ -23,22 +23,3 @@ This project is a simple implementation of the classic Tic Tac Toe game using HT
 - **HTML**: Provides the structure and basic layout of the game.
 - **CSS**: Styles the game board, buttons, and game status display.
 - **JavaScript**: Handles game logic, player turns, win detection, and user interaction.
-
-## How to Use
-
-1. Clone the repository: `git clone https://github.com/AkshatJMe/Tic-Tac-Toe.git`
-2. Open `index.html` in your web browser.
-
-3. Click on the squares to make your move. Alternate turns with your opponent.
-
-4. The game automatically detects when a player wins or when it's a draw.
-
-## Initial Setup
-
-<img width='100%' src='https://github.com/AkshatJMe/Tic-Tac-Toe/blob/main/screenshots/initial.png' />
-
-## Win Detection
-
-<img width='100%' src='https://github.com/AkshatJMe/Tic-Tac-Toe/blob/main/screenshots/win.png' />
-
-## TypeScript Code is Newly added for refrences.

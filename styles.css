@@ -31,6 +31,29 @@
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.25);
   padding: 0.5rem 3rem;
+  text-align: center;
+}
+
+/* Controls (choice buttons) */
+.controls {
+  position: absolute;
+  top: 7.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+}
+
+/* Choice buttons - styled to match theme */
+.choice-btn {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.5rem 1rem;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  min-width: 120px;
 }
 
 /* Tic Tac Toe grid styling */

@@ -1,13 +1,20 @@
-// Selecting DOM elements
+// --- Constants & state ---
+const HUMAN = "X";
+const AI = "O";
+const EMPTY = "";
+
+let board = Array(9).fill(EMPTY);
+let humanTurn = true;
+let gameOver = false;
+
+// DOM elements
 const boxes = document.querySelectorAll(".box");
 const gameInfo = document.querySelector(".game-info");
 const newGameBtn = document.querySelector(".btn");
+const humanFirstBtn = document.getElementById("humanFirst");
+const aiFirstBtn = document.getElementById("aiFirst");
 
-// Initializing game variables
-let currentPlayer;
-let gameGrid;
-
-// Array of winning positions in Tic Tac Toe
+// Winning positions
 const winningPositions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -19,98 +26,185 @@ const winningPositions = [
   [2, 4, 6],
 ];
 
-// Function to initialize the game
-function initGame() {
-  currentPlayer = "X";
-  gameGrid = ["", "", "", "", "", "", "", "", ""];
-
-  // Reset UI for each box
-  boxes.forEach((box, index) => {
-    box.innerText = ""; // Clear text content
-    boxes[index].style.pointerEvents = "all"; // Enable pointer events
-    box.classList = `box box${index + 1}`; // Reset box class
-  });
-
-  // Hide new game button
-  newGameBtn.classList.remove("active");
-
-  // Display current player
-  gameInfo.innerText = `Current Player - ${currentPlayer}`;
-}
-
-// Initial game setup
-initGame();
-
-// Function to swap turns between X and O
-function swapTurn() {
-  currentPlayer = currentPlayer === "X" ? "O" : "X";
-  // Update UI with current player
-  gameInfo.innerText = `Current Player - ${currentPlayer}`;
-}
-
-// Function to check if the game is over
-function checkGameOver() {
-  let answer = "";
-
-  // Check all winning combinations
-  winningPositions.forEach((position) => {
-    // Check if all three positions in a winning combination are the same and not empty
-    if (
-      gameGrid[position[0]] !== "" &&
-      gameGrid[position[0]] === gameGrid[position[1]] &&
-      gameGrid[position[1]] === gameGrid[position[2]]
-    ) {
-      // Determine the winner
-      answer = gameGrid[position[0]];
-
-      // Disable pointer events on boxes
-      boxes.forEach((box) => {
-        box.style.pointerEvents = "none";
-      });
-
-      // Highlight winning boxes
-      boxes[position[0]].classList.add("win");
-      boxes[position[1]].classList.add("win");
-      boxes[position[2]].classList.add("win");
-    }
-  });
-
-  // If there is a winner
-  if (answer !== "") {
-    gameInfo.innerText = `Winner Player - ${answer}`;
-    newGameBtn.classList.add("active"); // Show new game button
-    return;
-  }
-
-  // If no winner and all boxes are filled (tie game)
-  let fillCount = 0;
-  gameGrid.forEach((box) => {
-    if (box !== "") fillCount++;
-  });
-
-  if (fillCount === 9) {
-    gameInfo.innerText = "Game Tied !";
-    newGameBtn.classList.add("active"); // Show new game button
-  }
-}
-
-// Function to handle box click
-function handleClick(index) {
-  if (gameGrid[index] === "") {
-    boxes[index].innerText = currentPlayer; // Update box with current player (X or O)
-    gameGrid[index] = currentPlayer; // Update game grid
-    boxes[index].style.pointerEvents = "none"; // Disable further clicks on this box
-    swapTurn(); // Swap turn to the next player
-    checkGameOver(); // Check if game is over
-  }
-}
-
-// Event listeners for each box
+// --- Initialization: setup UI click handlers for boxes ---
 boxes.forEach((box, index) => {
   box.addEventListener("click", () => {
-    handleClick(index);
+    if (!humanTurn || gameOver || board[index] !== EMPTY) return;
+
+    makeMove(index, HUMAN);
+    if (checkEnd()) return;
+
+    humanTurn = false;
+    gameInfo.innerText = "AI is thinking...";
+    setTimeout(() => aiMove(), 250);
   });
 });
 
-// Event listener for new game button
-newGameBtn.addEventListener("click", initGame);
+// --- Start choice buttons ---
+humanFirstBtn.addEventListener("click", () => startGame("H"));
+aiFirstBtn.addEventListener("click", () => startGame("A"));
+
+// New game button
+newGameBtn.addEventListener("click", () => {
+  showChoiceButtons(true);
+  resetUI();
+  gameInfo.innerText = "Choose who goes first:";
+});
+
+// --- Core helpers ---
+function startGame(first) {
+  showChoiceButtons(false);
+  board = Array(9).fill(EMPTY);
+  gameOver = false;
+  humanTurn = first === "H";
+
+  // Reset UI boxes
+  boxes.forEach((b) => {
+    b.innerText = "";
+    b.classList.remove("win");
+    b.style.pointerEvents = "all";
+  });
+
+  newGameBtn.classList.remove("active");
+
+  gameInfo.innerText = humanTurn ? "Your turn!" : "AI is thinking...";
+  if (!humanTurn) setTimeout(() => aiMove(), 250);
+}
+
+function resetUI() {
+  board = Array(9).fill(EMPTY);
+  gameOver = false;
+  humanTurn = true;
+  boxes.forEach((b) => {
+    b.innerText = "";
+    b.classList.remove("win");
+    b.style.pointerEvents = "all";
+  });
+  newGameBtn.classList.remove("active");
+}
+
+// Show/hide the start choice buttons
+function showChoiceButtons(show) {
+  const controls = document.querySelector(".controls");
+  controls.style.display = show ? "flex" : "none";
+}
+
+// Make a move (update board and UI)
+function makeMove(index, player) {
+  board[index] = player;
+  boxes[index].innerText = player;
+  boxes[index].style.pointerEvents = "none";
+}
+
+// Check winner
+function checkWinner(b) {
+  for (let w of winningPositions) {
+    if (b[w[0]] !== EMPTY && b[w[0]] === b[w[1]] && b[w[1]] === b[w[2]]) {
+      return w;
+    }
+  }
+  return null;
+}
+
+function isFull(b) {
+  return b.every((c) => c !== EMPTY);
+}
+
+// Check game end and update UI
+function checkEnd() {
+  const winLine = checkWinner(board);
+  if (winLine) {
+    const winner = board[winLine[0]];
+    gameInfo.innerText = winner === HUMAN ? "You win!" : "AI wins!";
+    winLine.forEach((i) => boxes[i].classList.add("win"));
+    gameOver = true;
+    boxes.forEach((b) => (b.style.pointerEvents = "none"));
+    newGameBtn.classList.add("active");
+    return true;
+  }
+
+  if (isFull(board)) {
+    gameInfo.innerText = "It's a draw!";
+    gameOver = true;
+    newGameBtn.classList.add("active");
+    return true;
+  }
+
+  return false;
+}
+
+// --- AI: Minimax ---
+function minimax(b, isMaximizing, depth) {
+  const winLine = checkWinner(b);
+  const winner = winLine ? b[winLine[0]] : EMPTY;
+
+  if (winner === AI) return 10 - depth;
+  if (winner === HUMAN) return depth - 10;
+  if (isFull(b)) return 0;
+
+  if (isMaximizing) {
+    let bestScore = -Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (b[i] === EMPTY) {
+        b[i] = AI;
+        const score = minimax(b, false, depth + 1);
+        b[i] = EMPTY;
+        bestScore = Math.max(bestScore, score);
+      }
+    }
+    return bestScore;
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < 9; i++) {
+      if (b[i] === EMPTY) {
+        b[i] = HUMAN;
+        const score = minimax(b, true, depth + 1);
+        b[i] = EMPTY;
+        bestScore = Math.min(bestScore, score);
+      }
+    }
+    return bestScore;
+  }
+}
+
+function bestMove(b) {
+  let bestScore = -Infinity;
+  let move = -1;
+
+  for (let i = 0; i < 9; i++) {
+    if (b[i] === EMPTY) {
+      b[i] = AI;
+      const score = minimax(b, false, 0);
+      b[i] = EMPTY;
+      if (score > bestScore) {
+        bestScore = score;
+        move = i;
+      }
+    }
+  }
+
+  // fallback - take first empty if something odd happens
+  if (move === -1) {
+    for (let i = 0; i < 9; i++) if (b[i] === EMPTY) return i;
+  }
+  return move;
+}
+
+function aiMove() {
+  if (gameOver) return;
+
+  const mv = bestMove(board);
+  // defensive check
+  if (mv === -1) return;
+
+  makeMove(mv, AI);
+
+  if (checkEnd()) return;
+
+  humanTurn = true;
+  gameInfo.innerText = "Your turn!";
+}
+
+// Show initial controls
+showChoiceButtons(true);
+gameInfo.innerText = "Choose who goes first:";
